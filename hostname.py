@@ -1,5 +1,4 @@
-# Python3 code to display hostname and
-# IP address
+######################## Python3 code to display hostname and IP address ###############
  
 # Importing socket library
 import socket
