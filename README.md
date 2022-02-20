@@ -8,19 +8,14 @@ This repository contains everything that you need to run Litecoin in Docker and 
 
 
 ## Dockerfile
-Multistage build is picked up as approach. The main reason for this is because I do not want to have everything installed during the build process in the image which will run in Kubernetes. The first image (packager) is built with the single RUN approach. It is because the version of the Litecoin is not going to be change and I am not going to persist different layers for cache purposes. Using `sha256sum -c --strict -` will fail the whole build process if return error. The same will apply for running `python3 shasum.py`.
+Multistage build is picked up as approach. The main reason for this is because I do not want to have everything installed during the build process in the image which will run in Kubernetes. The first image (packager) is built with the single RUN approach. It is because the version of the Litecoin is not going to be change and I am not going to persist different layers for cache purposes. Using `sha256sum -c` will fail the whole build process if return error. The same will apply for running `python3 shasum.py`.
 
 Build it on your computer - `docker build -t litecoin:0.18.1 .`
 
 ## statefulset.yaml
 Prerequisites
 - `storageClassName: gp` created
-
-Additional information
-- Using `runAsUser` and `fsGroup` to ensure that I will run with the same user as the one I've created in the Dockerfile
-- `dnsConfig` - Adding it always after a huge outage of CoreDNS
-- `tolerations` - I am running it in GCP on preemptible nodes
-- `resources` - 256MB memory will be enough for Litecoin not in use :)
+-  'physical volume: mysql-01' created
 
 ## Jenkinsfile
 This is a very simple Jenkinsfile using Groovy DSL. You need to specify:
@@ -30,3 +25,5 @@ This is a very simple Jenkinsfile using Groovy DSL. You need to specify:
   - `USERNAME/litecoin` - for docker hub
 
 Please read the Requirements section for additional information about the kubeconfig customizations.
+
+## Text Manipulation problem:
